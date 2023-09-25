@@ -1,6 +1,5 @@
-import { sql } from '@vercel/postgres'
-import { db } from '@/lib/drizzle'
-import { UsersTable, User, NewUser } from './drizzle'
+import { db } from '@/lib/db/drizzle'
+import { NewUser, User, UsersTable } from '@/lib/db/schema/users'
 
 const newUsers: NewUser[] = [
 	{
@@ -18,19 +17,15 @@ const newUsers: NewUser[] = [
 		email: `stey@vercel.com`,
 		image: `https://pbs.twimg.com/profile_images/1506792347840888834/dS-r50Je_400x400.jpg`,
 	},
+	{
+		name: `Paul Bamberger`,
+		email: `jpb10191@gmail.com`,
+		image: `https://pbs.twimg.com/profile_images/1506792347840888834/dS-r50Je_400x400.jpg`,
+	},
 ]
 
 export async function seed() {
 	// Create table with raw SQL
-	const createTable = await sql.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        image VARCHAR(255),
-        "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      );
-  `)
 	console.log(`Created "users" table`)
 
 	const insertedUsers: User[] = await db
@@ -40,7 +35,6 @@ export async function seed() {
 	console.log(`Seeded ${insertedUsers.length} users`)
 
 	return {
-		createTable,
 		insertedUsers,
 	}
 }

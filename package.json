@@ -9,7 +9,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "generate-migration": "npx drizzle-kit generate:pg --out lib/db/migrations --schema lib/db/schema/*",
+    "migrate": "ts-node lib/db/migrate"
   },
   "dependencies": {
     "@types/node": "20.5.6",
@@ -17,6 +19,7 @@
     "@types/react-dom": "18.2.7",
     "@vercel/postgres": "0.4.1",
     "autoprefixer": "10.4.15",
+    "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.5",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
@@ -35,6 +38,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
+    "ts-node": "^10.9.1",
     "turbo": "^1.10.13"
   }
 }

@@ -1,8 +1,8 @@
-import { db, UsersTable } from '@/lib/drizzle'
+import { db } from '@/lib/db/drizzle'
+import { UsersTable } from '@/lib/db/schema/users'
 import { timeAgo } from '@/lib/utils'
 import Image from 'next/image'
 import RefreshButton from './refresh-button'
-import { seed } from '@/lib/seed'
 
 export default async function Table() {
 	let users
@@ -15,7 +15,7 @@ export default async function Table() {
 				`Table does not exist, creating and seeding it with dummy data now...`
 			)
 			// Table is not created yet
-			await seed()
+			// await seed()
 			startTime = Date.now()
 			users = await db.select().from(UsersTable)
 		} else {
