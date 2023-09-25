@@ -11,7 +11,8 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "generate-migration": "npx drizzle-kit generate:pg --out lib/db/migrations --schema lib/db/schema/*",
-    "migrate": "ts-node lib/db/migrate"
+    "migrate": "ts-node lib/db/migrate",
+    "seed": "ts-node lib/db/seed"
   },
   "dependencies": {
     "@types/node": "20.5.6",
@@ -36,6 +37,7 @@
     "drizzle-kit": "^0.19.13",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "pg": "^8.11.3",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "ts-node": "^10.9.1",

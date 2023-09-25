@@ -1,5 +1,5 @@
-import { db } from '@/lib/db/drizzle'
-import { NewUser, User, UsersTable } from '@/lib/db/schema/users'
+import { db } from './drizzle'
+import { NewUser, User, UsersTable } from './schema/users'
 
 const newUsers: NewUser[] = [
 	{
@@ -24,10 +24,7 @@ const newUsers: NewUser[] = [
 	},
 ]
 
-export async function seed() {
-	// Create table with raw SQL
-	console.log(`Created "users" table`)
-
+async function seed() {
 	const insertedUsers: User[] = await db
 		.insert(UsersTable)
 		.values(newUsers)
@@ -38,3 +35,13 @@ export async function seed() {
 		insertedUsers,
 	}
 }
+
+seed()
+	.then(() => {
+		console.log('Seed successful')
+		process.exit(0)
+	})
+	.catch((err) => {
+		console.error('Seed failed', err)
+		process.exit(1)
+	})
