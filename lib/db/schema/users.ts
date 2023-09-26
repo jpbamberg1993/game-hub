@@ -1,6 +1,7 @@
 import { pgTable, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm'
 import { getTimeStamp } from '../column-utils'
+import { GamesTable } from './games'
 
 export const UsersTable = pgTable(
 	'users',
@@ -21,3 +22,7 @@ export const UsersTable = pgTable(
 
 export type User = InferSelectModel<typeof UsersTable>
 export type NewUser = InferInsertModel<typeof UsersTable>
+
+export const UsersRelations = relations(UsersTable, ({ many }) => ({
+	games: many(GamesTable),
+}))

@@ -9,8 +9,10 @@ import {
 	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core'
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm'
 import { getTimeStamp } from '../column-utils'
+import { UsersTable } from './users'
+import { GamesToGenresTable } from './genres'
 
 export const GamesTable = pgTable(
 	'games',
@@ -27,6 +29,7 @@ export const GamesTable = pgTable(
 		ratingsCount: integer('ratings_count').notNull(),
 		metacritic: integer('metacritic').notNull(),
 		playtime: integer('playtime').notNull(),
+		userId: uuid('user_id').notNull(),
 	},
 	(games) => {
 		return {
@@ -34,6 +37,14 @@ export const GamesTable = pgTable(
 		}
 	}
 )
+
+export const GamesRelations = relations(GamesTable, ({ one, many }) => ({
+	user: one(UsersTable, {
+		fields: [GamesTable.userId],
+		references: [UsersTable.id],
+	}),
+	genres: many(GamesToGenresTable),
+}))
 
 export type Game = InferSelectModel<typeof GamesTable>
 export type NewGame = InferInsertModel<typeof GamesTable>

@@ -15,6 +15,13 @@
       "when": 1695760617952,
       "tag": "0001_old_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1695770312721,
+      "tag": "0002_fair_nightmare",
+      "breakpoints": true
     }
   ]
 }

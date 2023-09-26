@@ -46,19 +46,15 @@ export const GamesToGenresTable = pgTable(
 )
 
 export const GenresRelations = relations(GenresTable, ({ many }) => ({
-	GamesToGenresTable: many(GamesToGenresTable),
-}))
-
-export const GamesRelations = relations(GamesTable, ({ many }) => ({
-	GamesToGenresTable: many(GamesToGenresTable),
+	genres: many(GamesToGenresTable),
 }))
 
 export const genresRelations = relations(GamesToGenresTable, ({ one }) => ({
-	GenresTable: one(GenresTable, {
+	genres: one(GenresTable, {
 		fields: [GamesToGenresTable.genreId],
 		references: [GenresTable.id],
 	}),
-	GamesTable: one(GamesTable, {
+	games: one(GamesTable, {
 		fields: [GamesToGenresTable.gameId],
 		references: [GamesTable.id],
 	}),

@@ -1,0 +1,1 @@
+ALTER TABLE "games" ADD COLUMN "user_id" uuid NOT NULL;
