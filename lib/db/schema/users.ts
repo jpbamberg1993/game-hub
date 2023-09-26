@@ -1,11 +1,6 @@
-import {
-	pgTable,
-	timestamp,
-	uniqueIndex,
-	uuid,
-	varchar,
-} from 'drizzle-orm/pg-core'
+import { pgTable, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { getTimeStamp } from '../column-utils'
 
 export const UsersTable = pgTable(
 	'users',
@@ -14,12 +9,8 @@ export const UsersTable = pgTable(
 		name: varchar('name', { length: 255 }).notNull(),
 		email: varchar('email', { length: 255 }).notNull(),
 		image: varchar('image', { length: 255 }).notNull(),
-		createdAt: timestamp('createdAt', { withTimezone: true })
-			.notNull()
-			.defaultNow(),
-		updateAt: timestamp('updatedAt', { withTimezone: true })
-			.notNull()
-			.defaultNow(),
+		createdAt: getTimeStamp('created_at'),
+		updateAt: getTimeStamp('updated_at'),
 	},
 	(users) => {
 		return {
