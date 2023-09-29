@@ -18,6 +18,7 @@ export const GamesTable = pgTable(
 	'games',
 	{
 		id: uuid('id').primaryKey().defaultRandom().notNull(),
+		sourceId: integer('source_id').notNull(),
 		createdAt: getTimeStamp('created_at'),
 		updateAt: getTimeStamp('updated_at'),
 		slug: varchar('slug', { length: 255 }).notNull(),

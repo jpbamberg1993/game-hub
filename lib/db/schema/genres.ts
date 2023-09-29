@@ -45,6 +45,9 @@ export const GamesToGenresTable = pgTable(
 	}
 )
 
+export type GameToGenre = InferSelectModel<typeof GamesToGenresTable>
+export type NewGameToGenre = InferSelectModel<typeof GamesToGenresTable>
+
 export const GenresRelations = relations(GenresTable, ({ many }) => ({
 	genres: many(GamesToGenresTable),
 }))

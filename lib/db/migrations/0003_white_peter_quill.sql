@@ -1,0 +1,1 @@
+ALTER TABLE "games" ADD COLUMN "source_id" integer NOT NULL;
