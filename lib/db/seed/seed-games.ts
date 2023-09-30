@@ -1,4 +1,9 @@
-import { GamesTable, NewGame } from '../schema/games'
+import {
+	GamesTable,
+	GamesToPlatformsTable,
+	NewGame,
+	NewGameToPlatform,
+} from '../schema/games'
 import { RawgApi, RawgGame } from '../../rawg/rawg-api'
 import { db } from '../drizzle'
 import { User } from '../schema/users'
@@ -14,11 +19,26 @@ export class SeedGames {
 		const rawgGames = await this.rawgApi.getGames()
 		const games = this.mapGames(rawgGames)
 		const savedGames = await this.saveGames(games)
-		const gamesToGenres = await this.saveGamesToGenres(savedGames, rawgGames)
-		return (
-			rawgGames.length === savedGames.length &&
-			savedGames.length === gamesToGenres.length
-		)
+		await this.saveGamesToGenres(savedGames, rawgGames)
+		await this.saveGamesToPlatforms(savedGames, rawgGames)
+	}
+
+	private async saveGamesToPlatforms(games: NewGame[], rawgGames: RawgGame[]) {
+		let gamesToPlatforms: NewGameToPlatform[] = []
+		for (const rawgGame of rawgGames) {
+			const game = games.find((g) => g.sourceId === rawgGame.id)
+			if (!game) {
+				continue
+			}
+			const platforms = rawgGame.parent_platforms.map((platform) => {
+				return {
+					gameId: game.id,
+					platformId: platform.platform.id,
+				} as NewGameToPlatform
+			})
+			gamesToPlatforms = gamesToPlatforms.concat(platforms)
+		}
+		return db.insert(GamesToPlatformsTable).values(gamesToPlatforms).returning()
 	}
 
 	private async saveGamesToGenres(games: NewGame[], rawgGames: RawgGame[]) {

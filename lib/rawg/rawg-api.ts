@@ -10,6 +10,7 @@ export type RawgGame = {
 	metacritic: number
 	playtime: number
 	genres: RawgGenre[]
+	parent_platforms: { platform: RawgPlatform }[]
 }
 
 export type RawgGenre = {

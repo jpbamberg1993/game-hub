@@ -29,10 +29,7 @@ const newUsers: NewUser[] = [
 ]
 
 async function seedUsers() {
-	const insertedUsers: User[] = await db
-		.insert(UsersTable)
-		.values(newUsers)
-		.returning()
+	await db.insert(UsersTable).values(newUsers).returning()
 }
 
 async function seedGenres() {
@@ -58,12 +55,8 @@ async function seedPlatforms() {
 async function seedGames() {
 	const rawgApi = new RawgApi()
 	const users = await db.select().from(UsersTable).limit(10)
-	const seededGames = await new SeedGames(rawgApi, users).run()
-	if (seededGames) {
-		console.log('Games seeded')
-	} else {
-		console.log('Games failed to seed')
-	}
+	await new SeedGames(rawgApi, users).run()
+	console.log('Games seeded')
 }
 
 async function seed() {
