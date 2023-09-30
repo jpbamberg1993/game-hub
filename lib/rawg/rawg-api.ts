@@ -20,29 +20,38 @@ export type RawgGenre = {
 	image_background: string
 }
 
+export type RawgPlatform = {
+	id: number
+	name: string
+	slug: string
+	games_count: number
+	image_background: string
+}
+
 export class RawgApi {
 	private readonly BASE_URL: string = 'https://api.rawg.io/api'
 
-	public async getGenres(): Promise<RawgGenre[]> {
-		try {
-			const response = await this.sendRequest(`genres`)
-			const json = await response.json()
-			return json.results
-		} catch (e) {
-			console.error(e)
-			return []
+	public async getPlatforms(): Promise<RawgPlatform[]> {
+		const response = await this.sendRequest(`platforms`)
+		const json = await response.json()
+		if (json.next) {
+			const nextPageResponse = await fetch(json.next)
+			const nextPageJson = await nextPageResponse.json()
+			json.results = json.results.concat(nextPageJson.results)
 		}
+		return json.results
+	}
+
+	public async getGenres(): Promise<RawgGenre[]> {
+		const response = await this.sendRequest(`genres`)
+		const json = await response.json()
+		return json.results
 	}
 
 	public async getGames(): Promise<RawgGame[]> {
-		try {
-			const response = await this.sendRequest(`games`)
-			const json = await response.json()
-			return json.results
-		} catch (e) {
-			console.error(e)
-			return []
-		}
+		const response = await this.sendRequest(`games`)
+		const json = await response.json()
+		return json.results
 	}
 
 	private async sendRequest(route: string) {

@@ -3,6 +3,7 @@ import { NewUser, User, UsersTable } from '../schema/users'
 import { RawgApi } from '../../rawg/rawg-api'
 import { SeedGames } from './seed-games'
 import { SeedGenres } from './seed-genres'
+import { SeedPlatforms } from './seed-platforms'
 
 const newUsers: NewUser[] = [
 	{
@@ -44,6 +45,16 @@ async function seedGenres() {
 	}
 }
 
+async function seedPlatforms() {
+	const rawgApi = new RawgApi()
+	const seedPlatforms = await new SeedPlatforms(rawgApi).run()
+	if (seedPlatforms) {
+		console.log('Platforms seeded')
+	} else {
+		console.log('Platforms failed to seed')
+	}
+}
+
 async function seedGames() {
 	const rawgApi = new RawgApi()
 	const users = await db.select().from(UsersTable).limit(10)
@@ -66,6 +77,9 @@ async function seed() {
 			break
 		case 'seed-games':
 			await seedGames()
+			break
+		case 'seed-platforms':
+			await seedPlatforms()
 			break
 		default:
 			console.error(`You didn't specify what you wanted to seed.`)

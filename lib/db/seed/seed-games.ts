@@ -21,10 +21,7 @@ export class SeedGames {
 		)
 	}
 
-	private async saveGamesToGenres(
-		games: NewGame[],
-		rawgGames: RawgGame[]
-	): Promise<NewGameToGenre[]> {
+	private async saveGamesToGenres(games: NewGame[], rawgGames: RawgGame[]) {
 		let gamesToGenres: NewGameToGenre[] = []
 		for (const rawgGame of rawgGames) {
 			const game = games.find((g) => g.sourceId === rawgGame.id)
