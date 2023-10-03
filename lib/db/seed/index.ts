@@ -1,5 +1,5 @@
 import { db } from '../drizzle'
-import { NewUser, User, UsersTable } from '../schema/users'
+import { NewUser, UsersTable } from '../schema/users'
 import { RawgApi } from '../../rawg/rawg-api'
 import { SeedGames } from './seed-games'
 import { SeedGenres } from './seed-genres'
