@@ -15,8 +15,33 @@ export class SeedGames {
 		private readonly users: User[]
 	) {}
 
-	async run() {
-		const rawgGames = await this.rawgApi.getGames()
+	public async run() {
+		const pages = 100
+		const concurrentLimit = 10
+		const activeTasks: Promise<any>[] = []
+		let currentPage = 1
+
+		while (currentPage <= pages) {
+			if (activeTasks.length >= concurrentLimit) {
+				await Promise.race(activeTasks)
+			}
+			const activeTask = this.seed(currentPage)
+				.then(() => {
+					activeTasks.splice(activeTasks.indexOf(activeTask), 1)
+				})
+				.catch((e) => {
+					console.error(e)
+					activeTasks.splice(activeTasks.indexOf(activeTask), 1)
+				})
+			activeTasks.push(activeTask)
+			currentPage++
+		}
+
+		await Promise.all(activeTasks)
+	}
+
+	private async seed(page: number) {
+		const rawgGames = await this.rawgApi.getGames(page)
 		const games = this.mapGames(rawgGames)
 		const savedGames = await this.saveGames(games)
 		await this.saveGamesToGenres(savedGames, rawgGames)
@@ -64,21 +89,23 @@ export class SeedGames {
 	}
 
 	private mapGames(rawgGames: RawgGame[]): NewGame[] {
-		return rawgGames.map((game) => {
-			return {
-				name: game.name,
-				sourceId: game.id,
-				slug: game.slug,
-				released: game.released,
-				backgroundImage: game.background_image,
-				rating: game.rating.toString(),
-				ratingTop: game.rating_top,
-				ratingsCount: game.ratings_count,
-				metacritic: game.metacritic,
-				playtime: game.playtime,
-				userId: this.getRandomUserId(),
-			} as NewGame
-		})
+		return rawgGames
+			.filter((game) => game.released && game.background_image && game.rating)
+			.map((game) => {
+				return {
+					name: game.name,
+					sourceId: game.id,
+					slug: game.slug,
+					released: game.released,
+					backgroundImage: game.background_image,
+					rating: game.rating.toString(),
+					ratingTop: game.rating_top,
+					ratingsCount: game.ratings_count,
+					metacritic: game.metacritic ?? 0,
+					playtime: game.playtime,
+					userId: this.getRandomUserId(),
+				} as NewGame
+			})
 	}
 
 	private getRandomUserId() {
