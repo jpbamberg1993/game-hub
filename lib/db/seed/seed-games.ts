@@ -1,13 +1,12 @@
-import {
-	GamesTable,
-	GamesToPlatformsTable,
-	NewGame,
-	NewGameToPlatform,
-} from '../schema/games'
+import { GamesTable, NewGame } from '../schema/games'
 import { RawgApi, RawgGame } from '../../rawg/rawg-api'
 import { db } from '../drizzle'
 import { User } from '../schema/users'
 import { GamesToGenresTable, NewGameToGenre } from '../schema/genres'
+import {
+	GamesToPlatformsTable,
+	NewGameToPlatform,
+} from '../schema/gamesToPlatformsTable'
 
 export class SeedGames {
 	constructor(

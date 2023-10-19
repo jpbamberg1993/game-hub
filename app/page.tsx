@@ -1,20 +1,24 @@
-import { Game, GamesTable } from '@/lib/db/schema/games'
 import { db } from '@/lib/db/drizzle'
 import { GameCard } from '@/components/game-card'
-import { PlatformsTable } from '@/lib/db/schema/platforms'
-import { eq } from 'drizzle-orm'
+import { Game } from '@/lib/db/schema'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
 
-export default async function Home() {
+export default async function GameGrid() {
 	let games: Game[] = []
 	try {
-		// games = await db
-		// 	.select()
-		// 	.from(GamesTable)
-		// 	.innerJoin(PlatformsTable, eq(GamesTable.id, PlatformsTable.id))
-		// 	.limit(20)
+		games = await db.query.GamesTable.findMany({
+			with: {
+				platforms: {
+					columns: {},
+					with: {
+						platform: true,
+					},
+				},
+			},
+			limit: 20,
+		})
 	} catch (e) {
 		console.error(e)
 	}

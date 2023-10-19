@@ -13,7 +13,8 @@ import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm'
 import { getTimeStamp } from '../column-utils'
 import { UsersTable } from './users'
 import { GamesToGenresTable } from './genres'
-import { PlatformsTable } from './platforms'
+import { GamesToPlatformsTable } from './games-to-platforms-table'
+import { Platform } from '@/lib/db/schema/platforms'
 
 export const GamesTable = pgTable(
 	'games',
@@ -46,40 +47,11 @@ export const GamesRelations = relations(GamesTable, ({ one, many }) => ({
 		references: [UsersTable.id],
 	}),
 	genres: many(GamesToGenresTable),
+	platforms: many(GamesToPlatformsTable),
 }))
 
-export type Game = InferSelectModel<typeof GamesTable>
+export type BaseGame = InferSelectModel<typeof GamesTable>
+export type Game = BaseGame & {
+	platforms: { platform: Platform | null }[]
+}
 export type NewGame = InferInsertModel<typeof GamesTable>
-
-export const GamesToPlatformsTable = pgTable(
-	'games_to_platforms',
-	{
-		gameId: uuid('game_id').notNull(),
-		platformId: smallint('platform_id').notNull(),
-	},
-	(t) => {
-		return {
-			uniqueIdx: uniqueIndex(`unique_idx`).on(t.gameId, t.platformId),
-		}
-	}
-)
-
-export type GameToPlatform = InferSelectModel<typeof GamesToPlatformsTable>
-export type NewGameToPlatform = InferInsertModel<typeof GamesToPlatformsTable>
-
-// Todo: Add relations
-export const platformsRelations = relations(
-	GamesToPlatformsTable,
-	({ one }) => {
-		return {
-			platforms: one(PlatformsTable, {
-				fields: [GamesToPlatformsTable.platformId],
-				references: [PlatformsTable.id],
-			}),
-			games: one(GamesTable, {
-				fields: [GamesToPlatformsTable.gameId],
-				references: [GamesTable.id],
-			}),
-		}
-	}
-)

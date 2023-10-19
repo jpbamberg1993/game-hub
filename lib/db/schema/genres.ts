@@ -52,13 +52,16 @@ export const GenresRelations = relations(GenresTable, ({ many }) => ({
 	genres: many(GamesToGenresTable),
 }))
 
-export const genresRelations = relations(GamesToGenresTable, ({ one }) => ({
-	genres: one(GenresTable, {
-		fields: [GamesToGenresTable.genreId],
-		references: [GenresTable.id],
-	}),
-	games: one(GamesTable, {
-		fields: [GamesToGenresTable.gameId],
-		references: [GamesTable.id],
-	}),
-}))
+export const GamesToGenresRelations = relations(
+	GamesToGenresTable,
+	({ one }) => ({
+		genres: one(GenresTable, {
+			fields: [GamesToGenresTable.genreId],
+			references: [GenresTable.id],
+		}),
+		games: one(GamesTable, {
+			fields: [GamesToGenresTable.gameId],
+			references: [GamesTable.id],
+		}),
+	})
+)
