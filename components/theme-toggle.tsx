@@ -24,7 +24,7 @@ export function ThemeToggle() {
 	}
 
 	return (
-		<label className='relative inline-flex cursor-pointer items-center'>
+		<label className='relative inline-flex flex-none cursor-pointer items-center'>
 			<input
 				onChange={toggleTheme}
 				checked={darkMode}

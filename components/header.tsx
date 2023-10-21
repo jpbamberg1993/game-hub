@@ -5,9 +5,9 @@ import { ThemeToggle } from '@/components/theme-toggle'
 
 export function Header() {
 	return (
-		<header className='flex items-center justify-between py-4'>
-			<Link href='/'>
-				<Image src='/next.svg' width={500} height={500} alt='Next js logo' />
+		<header className='flex items-center py-4'>
+			<Link href='/' className='flex-none'>
+				<Image src='/next.svg' width={100} height={100} alt='Next js logo' />
 			</Link>
 			<SearchInput />
 			<ThemeToggle />
