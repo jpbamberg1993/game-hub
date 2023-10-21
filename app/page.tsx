@@ -24,7 +24,7 @@ export default async function GameGrid() {
 	}
 
 	return (
-		<div className='columns-2xs'>
+		<div className='sm:columns-2 lg:columns-4'>
 			{games.map((game) => (
 				<GameCard key={game.id} game={game} />
 			))}

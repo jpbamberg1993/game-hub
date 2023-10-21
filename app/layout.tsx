@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
+import { Header } from '@/components/header'
 
 export const metadata = {
 	title: `Vercel Postgres Demo with Drizzle`,
@@ -16,7 +17,12 @@ const inter = Inter({
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang='en'>
-			<body className={inter.variable}>{children}</body>
+			<body className={`${inter.variable} bg-white dark:bg-gray-800`}>
+				<div className='container mx-auto px-4 sm:px-6 lg:px-8'>
+					<Header />
+					{children}
+				</div>
+			</body>
 		</html>
 	)
 }
