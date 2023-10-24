@@ -3,9 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+    --foreground-rgb: 0, 0, 0;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+    color: rgb(var(--foreground-rgb));
+}
+
+@layer components {
+    .filter-neon {
+        filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)
+    }
 }

@@ -12,6 +12,6 @@ module.exports = {
 				default: ['var(--font-inter)'],
 			},
 		},
+		plugins: [],
 	},
-	plugins: [],
 }
