@@ -21,3 +21,10 @@ export function getCroppedImageUrl(url: string): string {
 
 	return `${start}media/crop/600/400/${end}`
 }
+
+export function filterDuplicates<T, K extends keyof T>(arr: T[], key: K): T[] {
+	return arr.filter(
+		(obj, index) =>
+			index === arr.findIndex((otherObj) => obj[key] === otherObj[key])
+	)
+}

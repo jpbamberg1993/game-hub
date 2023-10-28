@@ -68,15 +68,22 @@ async function seed() {
 		case 'seed-genres':
 			await seedGenres()
 			break
-		case 'seed-games':
-			await seedGames()
-			break
 		case 'seed-platforms':
 			await seedPlatforms()
 			break
+		case 'seed-games':
+			await seedGames()
+			break
 		default:
-			console.error(`You didn't specify what you wanted to seed.`)
+			await seedEverything()
 	}
+}
+
+async function seedEverything() {
+	await seedUsers()
+	await seedGenres()
+	await seedPlatforms()
+	await seedGames()
 }
 
 seed()

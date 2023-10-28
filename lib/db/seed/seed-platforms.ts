@@ -22,9 +22,28 @@ export class SeedPlatforms {
 				id: platform.id,
 				name: platform.name,
 				slug: platform.slug,
+				parentSlug: this.getParentSlug(platform.slug),
 				gamesCount: platform.games_count,
 				imageBackground: platform.image_background,
 			} as Platform
 		})
+	}
+
+	private getParentSlug(slug: string) {
+		const platforms = [
+			{ keyword: 'playstation', slug: 'playstation' },
+			{ keyword: 'xbox', slug: 'xbox' },
+			{ keyword: 'nintendo', slug: 'nintendo' },
+			{ keyword: 'ios', slug: 'ios' },
+			{ keyword: 'android', slug: 'android' },
+			{ keyword: 'mac', slug: 'mac' },
+			{ keyword: 'apple', slug: 'mac' },
+			{ keyword: 'linux', slug: 'linux' },
+			{ keyword: 'pc', slug: 'pc' },
+			{ keyword: 'ps-vita', slug: 'ps-vita' },
+			{ keyword: 'wii', slug: 'wii' },
+		]
+		const platform = platforms.find((p) => slug.includes(p.keyword))
+		return platform ? platform.slug : 'other'
 	}
 }
