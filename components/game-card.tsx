@@ -8,7 +8,7 @@ type Props = {
 
 export function GameCard({ game }: Props) {
 	return (
-		<div className='overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-cyan-950'>
+		<div className='transform overflow-hidden rounded-lg border border-gray-200 bg-white shadow transition-transform hover:scale-105 dark:border-gray-700 dark:bg-cyan-950'>
 			<img
 				src={getCroppedImageUrl(game.backgroundImage)}
 				alt={game.name}
