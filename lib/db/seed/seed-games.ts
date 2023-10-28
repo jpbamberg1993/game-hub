@@ -4,9 +4,9 @@ import { db } from '../drizzle'
 import { User } from '../schema/users'
 import { GamesToGenresTable, NewGameToGenre } from '../schema/genres'
 import {
-	GamesToPlatformsTable,
+	GamesToPlatforms,
 	NewGameToPlatform,
-} from '../schema/gamesToPlatformsTable'
+} from '../schema/games-to-platforms'
 
 export class SeedGames {
 	constructor(
@@ -62,7 +62,7 @@ export class SeedGames {
 			})
 			gamesToPlatforms = gamesToPlatforms.concat(platforms)
 		}
-		return db.insert(GamesToPlatformsTable).values(gamesToPlatforms).returning()
+		return db.insert(GamesToPlatforms).values(gamesToPlatforms).returning()
 	}
 
 	private async saveGamesToGenres(games: NewGame[], rawgGames: RawgGame[]) {

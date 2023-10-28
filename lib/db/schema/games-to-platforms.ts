@@ -4,7 +4,7 @@ import { relations } from 'drizzle-orm'
 import { PlatformsTable } from './platforms'
 import { GamesTable } from './games'
 
-export const GamesToPlatformsTable = pgTable(
+export const GamesToPlatforms = pgTable(
 	'games_to_platforms',
 	{
 		gameId: uuid('game_id').notNull(),
@@ -18,20 +18,20 @@ export const GamesToPlatformsTable = pgTable(
 )
 
 export const GamesToPlatformsRelations = relations(
-	GamesToPlatformsTable,
+	GamesToPlatforms,
 	({ one }) => {
 		return {
 			platform: one(PlatformsTable, {
-				fields: [GamesToPlatformsTable.platformId],
+				fields: [GamesToPlatforms.platformId],
 				references: [PlatformsTable.id],
 			}),
 			game: one(GamesTable, {
-				fields: [GamesToPlatformsTable.gameId],
+				fields: [GamesToPlatforms.gameId],
 				references: [GamesTable.id],
 			}),
 		}
 	}
 )
 
-export type GameToPlatform = InferSelectModel<typeof GamesToPlatformsTable>
-export type NewGameToPlatform = InferInsertModel<typeof GamesToPlatformsTable>
+export type GameToPlatform = InferSelectModel<typeof GamesToPlatforms>
+export type NewGameToPlatform = InferInsertModel<typeof GamesToPlatforms>

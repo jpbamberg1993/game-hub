@@ -13,7 +13,7 @@ import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm'
 import { getTimeStamp } from '../column-utils'
 import { UsersTable } from './users'
 import { GamesToGenresTable } from './genres'
-import { GamesToPlatformsTable } from './games-to-platforms-table'
+import { GamesToPlatforms } from './games-to-platforms'
 import { Platform } from '@/lib/db/schema/platforms'
 
 export const GamesTable = pgTable(
@@ -47,7 +47,7 @@ export const GamesRelations = relations(GamesTable, ({ one, many }) => ({
 		references: [UsersTable.id],
 	}),
 	genres: many(GamesToGenresTable),
-	platforms: many(GamesToPlatformsTable),
+	platforms: many(GamesToPlatforms),
 }))
 
 export type BaseGame = InferSelectModel<typeof GamesTable>
