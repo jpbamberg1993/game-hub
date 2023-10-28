@@ -8,7 +8,7 @@ export function CriticScore({ score }: Props) {
 
 	return (
 		<span
-			className={`${color} rounded bg-opacity-60 px-2 py-0.5 text-xs text-white dark:bg-opacity-30`}
+			className={`${color} rounded bg-opacity-60 px-2 py-0.5 text-xs text-gray-700 dark:bg-opacity-30`}
 		>
 			{score}
 		</span>
