@@ -2,6 +2,7 @@ import { Game } from '@/lib/db/schema/games'
 import { PlatformIconList } from '@/components/platform-icon-list'
 import { getCroppedImageUrl } from '@/lib/utils'
 import Image from 'next/image'
+import { CriticScore } from '@/components/critic-score'
 
 type Props = {
 	game: Game
@@ -18,8 +19,9 @@ export function GameCard({ game }: Props) {
 					objectFit='cover'
 				/>
 			</div>
-			<div className='p-6'>
+			<div className='align-center flex justify-between p-6'>
 				<PlatformIconList platforms={game.platforms} />
+				<CriticScore score={game.metacritic} />
 			</div>
 		</div>
 	)
