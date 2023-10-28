@@ -16,6 +16,7 @@ export const PlatformsTable = pgTable(
 		id: smallint('id').primaryKey().notNull(),
 		name: varchar('name', { length: 255 }).notNull(),
 		slug: varchar('slug', { length: 255 }).notNull(),
+		parentSlug: varchar('parent_slug', { length: 255 }).notNull(),
 		gamesCount: integer('games_count').notNull(),
 		imageBackground: text('image_background').notNull(),
 	},
