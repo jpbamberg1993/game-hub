@@ -42,7 +42,7 @@ export function PlatformIconList({ platforms }: Props) {
 			{filteredPlatforms.map((platform) => {
 				if (!platform) return null
 				const Icon = iconMap.get(platform.parentSlug) ?? Gi3DGlasses
-				return <Icon key={platform.id} />
+				return <Icon key={platform.id} className='dark:text-gray-300' />
 			})}
 		</div>
 	)
