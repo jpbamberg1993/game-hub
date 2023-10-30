@@ -11,6 +11,9 @@ module.exports = {
 			fontFamily: {
 				default: ['var(--font-inter)'],
 			},
+			colors: {
+				neon: '#00f400',
+			},
 		},
 		plugins: [],
 	},

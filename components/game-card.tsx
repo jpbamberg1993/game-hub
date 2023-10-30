@@ -3,6 +3,7 @@ import { PlatformIconList } from '@/components/platform-icon-list'
 import { getCroppedImageUrl } from '@/lib/utils'
 import Image from 'next/image'
 import { CriticScore } from '@/components/critic-score'
+import { Rating } from '@/components/rating'
 
 type Props = {
 	game: Game
@@ -19,9 +20,13 @@ export function GameCard({ game }: Props) {
 					objectFit='cover'
 				/>
 			</div>
-			<div className='align-center flex justify-between p-6'>
-				<PlatformIconList platforms={game.platforms} />
-				<CriticScore score={game.metacritic} />
+			<div className='p-6'>
+				<div className='align-center flex justify-between'>
+					<PlatformIconList platforms={game.platforms} />
+					<CriticScore score={game.metacritic} />
+				</div>
+				<h2 className='pt-3 text-xl font-bold dark:text-white'>{game.name}</h2>
+				<Rating rating={game.ratingTop} />
 			</div>
 		</div>
 	)
