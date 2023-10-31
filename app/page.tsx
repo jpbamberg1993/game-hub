@@ -1,33 +1,25 @@
-import { db } from '@/lib/db/drizzle'
-import { GameCard } from '@/components/game-card'
-import { Game } from '@/lib/db/schema'
+import { GamesGrid } from '@/components/games-grid'
+import { GenresList } from '@/components/genres-list'
+import { headers } from 'next/headers'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
 
+function getBaseUrl() {
+	const protocol = process.env.NODE_ENV === `development` ? `http` : `https`
+	const host = headers().get(`host`)
+	return `${protocol}://${host}`
+}
+
 export default async function GameGrid() {
-	let games: Game[] = []
-	try {
-		games = await db.query.GamesTable.findMany({
-			with: {
-				platforms: {
-					columns: {},
-					with: {
-						platform: true,
-					},
-				},
-			},
-			limit: 20,
-		})
-	} catch (e) {
-		console.error(e)
-	}
+	const gamesResponse = await fetch(`${getBaseUrl()}/api/games`)
+	if (!gamesResponse.ok) return <div>Failed to load games</div>
+	const data = await gamesResponse.json()
 
 	return (
-		<div className='container mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-			{games.map((game) => (
-				<GameCard key={game.id} game={game} />
-			))}
+		<div className='container mx-auto'>
+			<GenresList />
+			<GamesGrid games={data.games} />
 		</div>
 	)
 }
