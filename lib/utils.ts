@@ -1,5 +1,6 @@
 import ms from 'ms'
 import noImage from '../public/no-image-placeholder.webp'
+import { headers } from 'next/headers'
 
 export function timeAgo(timestamp: Date, timeOnly?: boolean): string {
 	if (!timestamp) return `never`
@@ -27,4 +28,10 @@ export function filterDuplicates<T, K extends keyof T>(arr: T[], key: K): T[] {
 		(obj, index) =>
 			index === arr.findIndex((otherObj) => obj[key] === otherObj[key])
 	)
+}
+
+export function getAbsoluteUrl(route: string) {
+	const protocol = process.env.NODE_ENV === `development` ? `http` : `https`
+	const host = headers().get(`host`)
+	return `${protocol}://${host}/api${route}`
 }
