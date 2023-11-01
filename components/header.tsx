@@ -10,7 +10,7 @@ export function Header() {
 				<Image
 					src='/next.svg'
 					width={100}
-					height={100}
+					height={20}
 					alt='Next js logo'
 					className='dark:filter-neon'
 				/>
