@@ -16,8 +16,9 @@ export function GameCard({ game }: Props) {
 				<Image
 					src={getCroppedImageUrl(game.backgroundImage)}
 					alt={game.name}
-					layout='fill'
-					objectFit='cover'
+					fill
+					sizes='400px'
+					className='object-cover object-top'
 				/>
 			</div>
 			<div className='p-6'>
