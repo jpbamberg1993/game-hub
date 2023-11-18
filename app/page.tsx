@@ -12,9 +12,10 @@ export const dynamic = `force-dynamic`
 
 export default async function Home() {
 	const queryClient = new QueryClient()
-	await queryClient.prefetchQuery({
+	await queryClient.prefetchInfiniteQuery({
 		queryKey: ['games'],
-		queryFn: () => getGames({ pageParam: 0 }),
+		queryFn: getGames,
+		initialPageParam: 0,
 	})
 	return (
 		<div className='container mx-auto'>

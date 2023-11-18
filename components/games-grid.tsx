@@ -3,25 +3,25 @@
 import React from 'react'
 import { getGames } from '@/actions/game-actions'
 import { GameCard } from '@/components/game-card'
-import { useQuery } from '@tanstack/react-query'
-
-// Todo: Move this back to a normal query
-// Todo: Then make sure it can handle query params
-// Todo: Then implement pagination
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 export function GamesGrid() {
-	const { data, error } = useQuery({
+	const { data, error } = useInfiniteQuery({
 		queryKey: ['games'],
-		queryFn: () => getGames({ pageParam: 0 }),
+		queryFn: getGames,
+		initialPageParam: 0,
+		getNextPageParam: (lastPage) => lastPage.nextPage,
 	})
-	if (error || !data?.data) {
+	if (error || !data?.pages) {
 		console.error(error)
 		return <div>Error loading games</div>
 	}
 	return (
 		<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-			{data.data.map((game) => (
-				<GameCard key={game.id} game={game} />
+			{data.pages.map((page) => (
+				<React.Fragment key={page.nextPage}>
+					{page.data?.map((game) => <GameCard key={game.id} game={game} />)}
+				</React.Fragment>
 			))}
 		</div>
 	)
