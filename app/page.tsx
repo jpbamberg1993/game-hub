@@ -14,7 +14,7 @@ export default async function Home() {
 	const queryClient = new QueryClient()
 	await queryClient.prefetchQuery({
 		queryKey: ['games'],
-		queryFn: getGames,
+		queryFn: () => getGames({ pageParam: 0 }),
 	})
 	return (
 		<div className='container mx-auto'>

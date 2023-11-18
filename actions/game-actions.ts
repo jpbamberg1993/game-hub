@@ -1,19 +1,27 @@
 import { Game } from '@/lib/db/schema'
 
-export async function getGames(): Promise<{
-	games?: Game[]
+export async function getGames({
+	pageParam = 0,
+}: {
+	pageParam: number
+}): Promise<{
+	data?: Game[]
+	nextPage: number
 	error?: Error | unknown
 }> {
+	const nextPage = pageParam
 	try {
-		const gamesResponse = await fetch('http://localhost:3000/api/games')
+		const gamesResponse = await fetch(
+			`http://localhost:3000/api/games?page=${nextPage}`
+		)
 		if (!gamesResponse.ok) {
-			return { error: new Error(gamesResponse.statusText) }
+			return { error: new Error(gamesResponse.statusText), nextPage }
 		}
 		const data = await gamesResponse.json()
-		return { games: data.games }
+		return { data: data.games, nextPage }
 	} catch (error) {
 		console.error(error)
-		return { error: error }
+		return { error: error, nextPage: nextPage }
 	}
 }
 
