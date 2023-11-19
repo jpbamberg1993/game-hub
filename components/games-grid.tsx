@@ -10,15 +10,21 @@ export function GamesGrid() {
 	const { data, fetchNextPage, hasNextPage, isLoading, error } =
 		useInfiniteQuery({
 			queryKey: ['games'],
-			queryFn: getGames,
+			queryFn: ({ pageParam }) => getGames({ pageParam }),
 			initialPageParam: 0,
 			getNextPageParam: (lastPage) => lastPage.nextPage,
 		})
-	if (error || !data?.pages) {
-		console.error(error)
+	if (isLoading) {
+		return <div>Loading...</div>
+	}
+	if (error) {
+		console.error(`Error loading games: `, error)
 		return <div>Error loading games</div>
 	}
-	const fetchedGamesCount = data?.pages.reduce(
+	if (!data) {
+		return null
+	}
+	const fetchedGamesCount = data.pages.reduce(
 		(count, page) => count + (page.data?.length ?? 0),
 		0
 	)
