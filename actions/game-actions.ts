@@ -12,7 +12,7 @@ export async function getGames({
 	const nextPage = pageParam + 1
 	try {
 		const gamesResponse = await fetch(
-			`http://localhost:3000/api/games?page=${pageParam}`
+			`https://game-hub-phi-six.vercel.app/api/games?page=${pageParam}`
 		)
 		if (!gamesResponse.ok) {
 			return { error: new Error(gamesResponse.statusText), nextPage }
