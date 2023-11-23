@@ -1,33 +1,15 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
-import { useRouter } from 'next/navigation'
-import { useDebounce } from 'use-debounce'
+import { useSearchQueryUpdater } from '@/hooks/search-hook'
 
 type Props = {
 	searchText: string
 }
 
 export function SearchInput({ searchText }: Props) {
-	const router = useRouter()
-	const routerRef = useRef(router)
-	const initialRender = useRef(true)
-	const [text, setText] = useState(searchText)
-	const [query] = useDebounce(text, 750)
-
-	useEffect(() => {
-		if (initialRender.current) {
-			initialRender.current = false
-			return
-		}
-
-		if (!query) {
-			routerRef.current.push('/')
-		} else {
-			routerRef.current.push(`/?search=${query}`)
-		}
-	}, [query])
+	const { text, setText } = useSearchQueryUpdater(searchText)
 
 	return (
 		<div className='flex-grow px-4'>
