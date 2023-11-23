@@ -1,16 +1,21 @@
 'use client'
 
 import React from 'react'
-import { getGames } from '@/actions/game-actions'
+import { GameQuery, getGames } from '@/actions/game-actions'
 import { GameCard } from '@/components/game-card'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-export function GamesGrid() {
+type Props = {
+	gameQuery: GameQuery
+}
+
+export function GamesGrid({ gameQuery }: Props) {
 	const { data, fetchNextPage, hasNextPage, isLoading, error } =
 		useInfiniteQuery({
 			queryKey: ['games'],
-			queryFn: ({ pageParam }) => getGames({ pageParam }),
+			queryFn: ({ pageParam }) =>
+				getGames({ page: pageParam, query: gameQuery }),
 			initialPageParam: 0,
 			getNextPageParam: (lastPage) => lastPage.nextPage,
 		})

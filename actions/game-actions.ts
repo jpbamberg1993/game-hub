@@ -3,12 +3,18 @@
 import { Game } from '@/lib/db/schema'
 import { db } from '@/lib/db/drizzle'
 
+export type GameQuery = {
+	searchText: string
+}
+
 export async function getGames({
-	pageParam = 0,
+	page = 0,
+	query,
 }: {
-	pageParam: number
+	page: number
+	query: GameQuery
 }): Promise<{ data?: Game[]; nextPage: number; error?: Error | unknown }> {
-	const nextPage = pageParam + 1
+	const nextPage = page + 1
 	try {
 		const data = await db.query.GamesTable.findMany({
 			with: {
@@ -19,7 +25,8 @@ export async function getGames({
 					},
 				},
 			},
-			offset: pageParam * 20,
+			where: (game, { ilike }) => ilike(game.name, `%${query.searchText}%`),
+			offset: page * 20,
 			limit: 20,
 		})
 		return { data, nextPage }

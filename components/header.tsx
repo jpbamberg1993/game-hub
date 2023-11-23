@@ -3,7 +3,11 @@ import Link from 'next/link'
 import { SearchInput } from '@/components/search-input'
 import { ThemeToggle } from '@/components/theme-toggle'
 
-export function Header() {
+type Props = {
+	searchText: string
+}
+
+export function Header({ searchText }: Props) {
 	return (
 		<header className='flex items-center py-4'>
 			<Link href='/' className='relative'>
@@ -15,7 +19,7 @@ export function Header() {
 					className='dark:filter-neon'
 				/>
 			</Link>
-			<SearchInput />
+			<SearchInput searchText={searchText} />
 			<ThemeToggle />
 		</header>
 	)

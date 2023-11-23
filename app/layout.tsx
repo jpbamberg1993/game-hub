@@ -20,10 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		<html lang='en'>
 			<body className={`${inter.variable} bg-white dark:bg-gray-800`}>
 				<Provider>
-					<div className='px-4 sm:px-6 lg:px-8'>
-						<Header />
-						{children}
-					</div>
+					<div className='px-4 sm:px-6 lg:px-8'>{children}</div>
 				</Provider>
 			</body>
 		</html>

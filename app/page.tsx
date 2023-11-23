@@ -6,22 +6,31 @@ import {
 	QueryClient,
 } from '@tanstack/react-query'
 import { getGames } from '@/actions/game-actions'
+import { Header } from '@/components/header'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
 
-export default async function Home() {
+export default async function Home({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string | string[] | undefined }
+}) {
+	const searchText =
+		typeof searchParams.search === 'string' ? searchParams.search : ''
+	const gameQuery = { searchText }
 	const queryClient = new QueryClient()
 	await queryClient.prefetchInfiniteQuery({
 		queryKey: ['games'],
-		queryFn: getGames,
+		queryFn: () => getGames({ page: 0, query: gameQuery }),
 		initialPageParam: 0,
 	})
 	return (
 		<div className='container mx-auto'>
+			<Header searchText={searchText} />
 			<GenresList />
 			<HydrationBoundary state={dehydrate(queryClient)}>
-				<GamesGrid />
+				<GamesGrid gameQuery={gameQuery} />
 			</HydrationBoundary>
 		</div>
 	)
