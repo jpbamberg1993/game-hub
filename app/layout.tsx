@@ -1,8 +1,8 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
-import { Header } from '@/components/header'
 import { Provider } from '@/util/Provider'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata = {
 	title: `Vercel Postgres Demo with Drizzle`,
@@ -20,7 +20,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		<html lang='en'>
 			<body className={`${inter.variable} bg-white dark:bg-gray-800`}>
 				<Provider>
-					<div className='px-4 sm:px-6 lg:px-8'>{children}</div>
+					<div className='px-4 sm:px-6 lg:px-8'>
+						{children}
+						<Analytics />
+					</div>
 				</Provider>
 			</body>
 		</html>
