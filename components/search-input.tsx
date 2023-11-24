@@ -8,14 +8,17 @@ type Props = {
 	searchText: string
 }
 
-function isMac() {
-	return navigator.userAgent.toUpperCase().includes('MAC')
-}
-
 export function SearchInput({ searchText }: Props) {
+	const [isMac, setIsMac] = useState(false)
 	const searchRef = useRef<HTMLInputElement>(null)
 	const { text, setText } = useSearchQueryUpdater(searchText)
 
+	// Todo: Move to custom hook
+	useEffect(() => {
+		setIsMac(navigator.userAgent.toUpperCase().includes('MAC'))
+	}, [])
+
+	// Todo: Move to custom hook
 	useEffect(() => {
 		function handleMetaKeyPlusK(event: KeyboardEvent) {
 			if (event.metaKey && event.key === 'k') {
@@ -29,7 +32,7 @@ export function SearchInput({ searchText }: Props) {
 		return () => window.removeEventListener('keydown', handleMetaKeyPlusK)
 	}, [])
 
-	const placeholder = isMac() ? '⌘+K to search' : 'Ctrl+K to search'
+	const placeholder = isMac ? '⌘+K to search' : 'Ctrl+K to search'
 
 	return (
 		<div className='flex-grow px-4'>
