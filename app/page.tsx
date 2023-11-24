@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query'
 import { getGames } from '@/actions/game-actions'
 import { Header } from '@/components/header'
+import { Title } from '@/components/title'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
@@ -30,9 +31,12 @@ export default async function Home({
 			<Header searchText={searchText} />
 			<div>
 				<GenresList />
-				<HydrationBoundary state={dehydrate(queryClient)}>
-					<GamesGrid gameQuery={gameQuery} />
-				</HydrationBoundary>
+				<div>
+					<Title />
+					<HydrationBoundary state={dehydrate(queryClient)}>
+						<GamesGrid gameQuery={gameQuery} />
+					</HydrationBoundary>
+				</div>
 			</div>
 		</div>
 	)
