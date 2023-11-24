@@ -21,7 +21,7 @@ export default async function Home({
 	const gameQuery = { searchText }
 	const queryClient = new QueryClient()
 	await queryClient.prefetchInfiniteQuery({
-		queryKey: ['games'],
+		queryKey: ['games', gameQuery],
 		queryFn: () => getGames({ page: 0, query: gameQuery }),
 		initialPageParam: 0,
 	})
