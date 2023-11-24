@@ -13,7 +13,7 @@ type Props = {
 export function GamesGrid({ gameQuery }: Props) {
 	const { data, fetchNextPage, hasNextPage, isLoading, error } =
 		useInfiniteQuery({
-			queryKey: ['games'],
+			queryKey: ['games', gameQuery],
 			queryFn: ({ pageParam }) =>
 				getGames({ page: pageParam, query: gameQuery }),
 			initialPageParam: 0,
