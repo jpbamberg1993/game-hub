@@ -28,10 +28,12 @@ export default async function Home({
 	return (
 		<div className='container mx-auto'>
 			<Header searchText={searchText} />
-			<GenresList />
-			<HydrationBoundary state={dehydrate(queryClient)}>
-				<GamesGrid gameQuery={gameQuery} />
-			</HydrationBoundary>
+			<div>
+				<GenresList />
+				<HydrationBoundary state={dehydrate(queryClient)}>
+					<GamesGrid gameQuery={gameQuery} />
+				</HydrationBoundary>
+			</div>
 		</div>
 	)
 }

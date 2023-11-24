@@ -3,35 +3,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import { useSearchQueryUpdater } from '@/hooks/search-hook'
+import { useIsMac } from '@/hooks/is-mac-hook'
+import { useSearchInputKeyboardHook } from '@/hooks/search-input-keyboard-hook'
 
 type Props = {
 	searchText: string
 }
 
 export function SearchInput({ searchText }: Props) {
-	const [isMac, setIsMac] = useState(false)
 	const searchRef = useRef<HTMLInputElement>(null)
+	useSearchInputKeyboardHook(searchRef)
 	const { text, setText } = useSearchQueryUpdater(searchText)
-
-	// Todo: Move to custom hook
-	useEffect(() => {
-		setIsMac(navigator.userAgent.toUpperCase().includes('MAC'))
-	}, [])
-
-	// Todo: Move to custom hook
-	useEffect(() => {
-		function handleMetaKeyPlusK(event: KeyboardEvent) {
-			if (event.metaKey && event.key === 'k') {
-				event.preventDefault()
-				searchRef.current?.focus()
-			}
-		}
-
-		window.addEventListener('keydown', handleMetaKeyPlusK)
-
-		return () => window.removeEventListener('keydown', handleMetaKeyPlusK)
-	}, [])
-
+	const { isMac } = useIsMac()
 	const placeholder = isMac ? '⌘+K to search' : 'Ctrl+K to search'
 
 	return (
