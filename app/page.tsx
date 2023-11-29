@@ -26,8 +26,7 @@ export default async function Home({
 		typeof searchParams.search === 'string' ? searchParams.search : ''
 	const genreSlug =
 		typeof searchParams.genre === 'string' ? searchParams.genre : ''
-	const genreId = genres.find((g) => g.slug === genreSlug)?.id
-	const gameQuery = { searchText, genreId }
+	const gameQuery = { searchText, genreSlug }
 	const queryClient = new QueryClient()
 	await queryClient.prefetchInfiniteQuery({
 		queryKey: ['games', gameQuery],
