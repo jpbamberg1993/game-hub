@@ -14,7 +14,7 @@ import { Gi3DGlasses, GiSmartphone } from 'react-icons/gi'
 import { filterDuplicates } from '@/lib/utils'
 
 type Props = {
-	platforms: { platform: Platform | null }[]
+	platforms: Platform[]
 }
 
 export function PlatformIconList({ platforms }: Props) {
@@ -31,11 +31,7 @@ export function PlatformIconList({ platforms }: Props) {
 		['ps-vita', SiPlaystationvita],
 	])
 
-	const flattenedPlatforms: Platform[] = platforms
-		.filter(({ platform }) => platform !== null)
-		.map(({ platform }) => platform as Platform)
-
-	const filteredPlatforms = filterDuplicates(flattenedPlatforms, 'parentSlug')
+	const filteredPlatforms = filterDuplicates(platforms, 'parentSlug')
 
 	return (
 		<div className='flex'>

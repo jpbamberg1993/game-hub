@@ -10,6 +10,8 @@ type Props = {
 }
 
 export function GameCard({ game }: Props) {
+	const platforms =
+		game.platforms?.filter((platform) => platform !== null) ?? []
 	return (
 		<div className='transform overflow-hidden rounded-lg border border-gray-200 bg-white shadow transition-transform hover:scale-105 dark:border-gray-700 dark:bg-cyan-950'>
 			<div className='relative h-60 w-full'>
@@ -23,7 +25,7 @@ export function GameCard({ game }: Props) {
 			</div>
 			<div className='p-6'>
 				<div className='align-center flex justify-between'>
-					<PlatformIconList platforms={game.platforms} />
+					<PlatformIconList platforms={platforms} />
 					<CriticScore score={game.metacritic} />
 				</div>
 				<h2 className='pt-3 text-xl font-bold dark:text-white'>{game.name}</h2>

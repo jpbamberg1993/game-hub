@@ -22,7 +22,7 @@ export const GamesTable = pgTable(
 		id: uuid('id').primaryKey().defaultRandom().notNull(),
 		sourceId: integer('source_id').notNull(),
 		createdAt: getTimeStamp('created_at'),
-		updateAt: getTimeStamp('updated_at'),
+		updatedAt: getTimeStamp('updated_at'),
 		slug: varchar('slug', { length: 255 }).notNull(),
 		name: varchar('name', { length: 255 }).notNull(),
 		released: date('released_at').notNull(),
@@ -52,6 +52,6 @@ export const GamesRelations = relations(GamesTable, ({ one, many }) => ({
 
 export type BaseGame = InferSelectModel<typeof GamesTable>
 export type Game = BaseGame & {
-	platforms: { platform: Platform | null }[]
+	platforms: Platform[] | null
 }
 export type NewGame = InferInsertModel<typeof GamesTable>

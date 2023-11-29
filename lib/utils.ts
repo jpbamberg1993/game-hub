@@ -23,8 +23,7 @@ export function getCroppedImageUrl(url: string): string {
 }
 
 export function filterDuplicates<T, K extends keyof T>(arr: T[], key: K): T[] {
-	return arr.filter(
-		(obj, index) =>
-			index === arr.findIndex((otherObj) => obj[key] === otherObj[key])
-	)
+	return arr.filter((obj, index) => {
+		return index === arr.findIndex((otherObj) => obj[key] === otherObj[key])
+	})
 }
