@@ -37,7 +37,7 @@ export default async function Home({
 	return (
 		<div className='container mx-auto'>
 			<Header searchText={searchText} />
-			<div>
+			<div className='grid md:grid-cols-[auto_1fr]'>
 				<GenresList genres={genres} selectedGenre={genreSlug} />
 				<div>
 					<Title />
