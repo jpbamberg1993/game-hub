@@ -1,6 +1,5 @@
 'use client'
 
-import { getGenres } from '@/actions/genre-actions'
 import { Genre } from '@/lib/db/schema'
 import { useGenreHook } from '@/hooks/genre-hook'
 import Image from 'next/image'
@@ -23,7 +22,7 @@ export function GenresList({ genres, selectedGenre }: Props) {
 						<li
 							key={g.id}
 							className={`flex items-center py-1.5 pl-1 ${
-								activeGenre && 'border border-neon'
+								activeGenre && 'border border-gray-700 dark:border-neon'
 							}`}
 						>
 							<Image
