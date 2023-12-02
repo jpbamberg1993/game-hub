@@ -51,5 +51,5 @@ Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&ut
 ### Run Drizzle Studio
 
 ```bash
-npx drizzle-studio studio
+npx drizzle-kit studio
 ```
