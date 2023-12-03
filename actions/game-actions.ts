@@ -25,7 +25,6 @@ export async function getGames({
 	query: GameQuery
 }): Promise<{ data?: Game[]; nextPage: number; error?: Error | unknown }> {
 	const nextPage = page + 1
-	console.log(`getGames: query: ${JSON.stringify(query)}`)
 	try {
 		const statement = db
 			.select({
