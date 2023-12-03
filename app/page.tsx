@@ -40,7 +40,7 @@ export default async function Home({
 			<div className='grid md:grid-cols-[auto_1fr]'>
 				<GenresList genres={genres} selectedGenre={genreSlug} />
 				<div>
-					<Title />
+					<Title gameQuery={gameQuery} genres={genres} />
 					<HydrationBoundary state={dehydrate(queryClient)}>
 						<GamesGrid gameQuery={gameQuery} />
 					</HydrationBoundary>
