@@ -9,6 +9,7 @@ import { getGames } from '@/actions/game-actions'
 import { Header } from '@/components/header'
 import { Title } from '@/components/title'
 import { getGenres } from '@/actions/genre-actions'
+import { MobileFilterMenu } from '@/components/mobile-filter-menu'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
@@ -41,6 +42,7 @@ export default async function Home({
 				<GenresList genres={genres} selectedGenre={genreSlug} />
 				<div>
 					<Title gameQuery={gameQuery} genres={genres} />
+					<MobileFilterMenu genres={genres} gameQuery={gameQuery} />
 					<HydrationBoundary state={dehydrate(queryClient)}>
 						<GamesGrid gameQuery={gameQuery} />
 					</HydrationBoundary>
