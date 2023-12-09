@@ -42,7 +42,10 @@ export default async function Home({
 				<GenresList genres={genres} selectedGenre={genreSlug} />
 				<div>
 					<Title gameQuery={gameQuery} genres={genres} />
-					<MobileFilterMenu genres={genres} gameQuery={gameQuery} />
+					<div className='grid grid-cols-[1fr_auto] px-4 pt-2 align-middle'>
+						<div></div>
+						<MobileFilterMenu genres={genres} gameQuery={gameQuery} />
+					</div>
 					<HydrationBoundary state={dehydrate(queryClient)}>
 						<GamesGrid gameQuery={gameQuery} />
 					</HydrationBoundary>
