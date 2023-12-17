@@ -13,7 +13,7 @@ export function GenresList({ genres, selectedGenre }: Props) {
 	const { genre, setGenre } = useGenreHook(selectedGenre ?? '')
 
 	return (
-		<div className='hidden pt-2 md:block'>
+		<div className='pt-2'>
 			<h2 className='pb-2 text-xl font-bold dark:text-white'>Genres</h2>
 			<ul>
 				{genres.map((g) => {

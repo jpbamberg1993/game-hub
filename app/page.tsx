@@ -39,7 +39,9 @@ export default async function Home({
 		<div className='container mx-auto'>
 			<Header searchText={searchText} />
 			<div className='grid md:grid-cols-[auto_1fr]'>
-				<GenresList genres={genres} selectedGenre={genreSlug} />
+				<div className='hidden md:block'>
+					<GenresList genres={genres} selectedGenre={genreSlug} />
+				</div>
 				<div>
 					<Title gameQuery={gameQuery} genres={genres} />
 					<div className='grid grid-cols-[1fr_auto] px-4 pt-2 align-middle'>

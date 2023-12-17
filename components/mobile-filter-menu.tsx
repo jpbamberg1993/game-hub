@@ -3,8 +3,11 @@
 import { Genre } from '@/lib/db/schema'
 import { GameQuery } from '@/actions/game-actions'
 import { useGenreHook } from '@/hooks/genre-hook'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { RxHamburgerMenu } from 'react-icons/rx'
+import { Buttton } from '@/components/buttton'
+import { GenresList } from '@/components/genres-list'
+import { IoCloseCircle } from 'react-icons/io5'
 
 type Props = {
 	genres: Genre[]
@@ -12,8 +15,15 @@ type Props = {
 }
 
 export function MobileFilterMenu({ genres, gameQuery }: Props) {
-	const { genre, setGenre } = useGenreHook(gameQuery.genreSlug ?? '')
+	const { genre } = useGenreHook(gameQuery.genreSlug ?? '')
 	const [displayMenu, setDisplayMenu] = useState<boolean>(false)
+
+	console.log(`--> genre changed: ${genre}`)
+
+	useEffect(() => {
+		console.log(`--> useEffect: MobileFilterMenu`)
+		// setDisplayMenu(false)
+	}, [genre])
 
 	return (
 		<>
@@ -26,16 +36,16 @@ export function MobileFilterMenu({ genres, gameQuery }: Props) {
 			{displayMenu && (
 				<div
 					id='mobileOverlay'
-					className='fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75'
+					className='fixed inset-0 z-50 h-full overflow-auto bg-gray-900'
 				>
-					<div className='text-center text-white'>
-						<p>Overlay Content Here</p>
-						<button
+					<div className='grid p-4'>
+						<Buttton
 							onClick={() => setDisplayMenu(!displayMenu)}
-							className='mt-4 rounded bg-red-500 px-4 py-2 text-white'
+							className='fixed bottom-0 right-0 justify-self-end px-4 py-4 dark:text-white'
 						>
-							Close
-						</button>
+							<IoCloseCircle size={55} />
+						</Buttton>
+						<GenresList genres={genres} selectedGenre={gameQuery.genreSlug} />
 					</div>
 				</div>
 			)}
