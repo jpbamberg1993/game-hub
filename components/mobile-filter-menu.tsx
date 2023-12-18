@@ -2,7 +2,6 @@
 
 import { Genre } from '@/lib/db/schema'
 import { GameQuery } from '@/actions/game-actions'
-import { useGenreHook } from '@/hooks/genre-hook'
 import { useEffect, useState } from 'react'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { Buttton } from '@/components/buttton'
@@ -15,15 +14,11 @@ type Props = {
 }
 
 export function MobileFilterMenu({ genres, gameQuery }: Props) {
-	const { genre } = useGenreHook(gameQuery.genreSlug ?? '')
 	const [displayMenu, setDisplayMenu] = useState<boolean>(false)
 
-	console.log(`--> genre changed: ${genre}`)
-
 	useEffect(() => {
-		console.log(`--> useEffect: MobileFilterMenu`)
-		// setDisplayMenu(false)
-	}, [genre])
+		setDisplayMenu(false)
+	}, [gameQuery.genreSlug, setDisplayMenu])
 
 	return (
 		<>
