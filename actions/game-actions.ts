@@ -10,7 +10,7 @@ import {
 	PlatformsTable,
 } from '@/lib/db/schema'
 import { db } from '@/lib/db/drizzle'
-import { asc, eq, getTableColumns, ilike, sql } from 'drizzle-orm'
+import { and, asc, eq, getTableColumns, ilike, sql } from 'drizzle-orm'
 
 export type GameQuery = {
 	searchText: string
@@ -43,8 +43,13 @@ export async function getGames({
 				GamesToGenresTable,
 				eq(GamesTable.id, GamesToGenresTable.gameId)
 			)
-			.innerJoin(GenresTable, eq(GamesToGenresTable.genreId, GenresTable.id))
-			.where(ilike(GamesTable.name, `%${query.searchText}%`))
+			.innerJoin(
+				GenresTable,
+				and(
+					eq(GamesToGenresTable.genreId, GenresTable.id),
+					ilike(GamesTable.name, `%${query.searchText}%`)
+				)
+			)
 			.groupBy(GamesTable.id)
 			.orderBy(asc(GamesTable.createdAt))
 			.limit(20)
