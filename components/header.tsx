@@ -7,7 +7,7 @@ type Props = {
 	searchText: string
 }
 
-export function Header({ searchText }: Props) {
+export function Header() {
 	return (
 		<header className='flex items-center py-4'>
 			<Link href='/' className='relative'>
@@ -19,7 +19,7 @@ export function Header({ searchText }: Props) {
 					className='dark:filter-neon'
 				/>
 			</Link>
-			<SearchInput searchText={searchText} />
+			<SearchInput />
 			<ThemeToggle />
 		</header>
 	)

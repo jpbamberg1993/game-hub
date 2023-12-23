@@ -24,7 +24,7 @@ export default async function Home({
 
 	// Info: Fetching games
 	const searchText =
-		typeof searchParams.search === 'string' ? searchParams.search : ''
+		typeof searchParams.searchText === 'string' ? searchParams.searchText : ''
 	const genreSlug =
 		typeof searchParams.genre === 'string' ? searchParams.genre : ''
 	const gameQuery = { searchText, genreSlug }
@@ -37,7 +37,7 @@ export default async function Home({
 
 	return (
 		<div className='container mx-auto'>
-			<Header searchText={searchText} />
+			<Header />
 			<div className='grid md:grid-cols-[auto_1fr]'>
 				<div className='hidden md:block'>
 					<GenresList genres={genres} selectedGenre={genreSlug} />

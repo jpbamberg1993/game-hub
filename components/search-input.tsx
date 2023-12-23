@@ -1,19 +1,20 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { BsSearch } from 'react-icons/bs'
-import { useSearchQueryUpdater } from '@/hooks/search-hook'
 import { useIsMac } from '@/hooks/is-mac-hook'
 import { useSearchInputKeyboardHook } from '@/hooks/search-input-keyboard-hook'
+import { useSearchQueryParams } from '@/providers/query-params-provider'
 
 type Props = {
 	searchText: string
 }
 
-export function SearchInput({ searchText }: Props) {
+export function SearchInput() {
 	const searchRef = useRef<HTMLInputElement>(null)
 	useSearchInputKeyboardHook(searchRef)
-	const { text, setText } = useSearchQueryUpdater(searchText)
+	const { gameQueryParams, setGameQueryParams } = useSearchQueryParams()
+	const { searchText } = gameQueryParams
 	const { isMac } = useIsMac()
 	const placeholder = isMac ? '⌘+K to search' : 'Ctrl+K to search'
 
@@ -24,8 +25,13 @@ export function SearchInput({ searchText }: Props) {
 				<BsSearch className='dark:text-gray-50' />
 				<input
 					ref={searchRef}
-					value={text}
-					onChange={(event) => setText(event.target.value)}
+					value={searchText}
+					onChange={(event) =>
+						setGameQueryParams({
+							...gameQueryParams,
+							searchText: event.target.value,
+						})
+					}
 					type='text'
 					name='search'
 					placeholder={placeholder}
