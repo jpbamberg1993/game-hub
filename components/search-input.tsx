@@ -14,7 +14,6 @@ export function SearchInput() {
 	const searchRef = useRef<HTMLInputElement>(null)
 	useSearchInputKeyboardHook(searchRef)
 	const { gameQueryParams, setGameQueryParams } = useSearchQueryParams()
-	const { searchText } = gameQueryParams
 	const { isMac } = useIsMac()
 	const placeholder = isMac ? '⌘+K to search' : 'Ctrl+K to search'
 
@@ -25,7 +24,7 @@ export function SearchInput() {
 				<BsSearch className='dark:text-gray-50' />
 				<input
 					ref={searchRef}
-					value={searchText}
+					value={gameQueryParams.searchText}
 					onChange={(event) =>
 						setGameQueryParams({
 							...gameQueryParams,

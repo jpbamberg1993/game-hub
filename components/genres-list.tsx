@@ -3,21 +3,22 @@
 import { Genre } from '@/lib/db/schema'
 import { useGenreHook } from '@/hooks/genre-hook'
 import Image from 'next/image'
+import { useSearchQueryParams } from '@/providers/query-params-provider'
 
 type Props = {
 	genres: Genre[]
 	selectedGenre?: string
 }
 
-export function GenresList({ genres, selectedGenre }: Props) {
-	const { genre, setGenre } = useGenreHook(selectedGenre ?? '')
+export function GenresList({ genres }: Props) {
+	const { gameQueryParams, setGameQueryParams } = useSearchQueryParams()
 
 	return (
 		<div className='pt-2'>
 			<h2 className='pb-2 text-xl font-bold dark:text-white'>Genres</h2>
 			<ul>
 				{genres.map((g) => {
-					const activeGenre = genre === g.slug
+					const activeGenre = gameQueryParams.genreSlug === g.slug
 					return (
 						<li
 							key={g.id}
@@ -33,7 +34,9 @@ export function GenresList({ genres, selectedGenre }: Props) {
 								className='h-[32px] w-[32px] rounded-lg object-cover'
 							/>
 							<button
-								onClick={() => setGenre(g.slug)}
+								onClick={() =>
+									setGameQueryParams({ ...gameQueryParams, genreSlug: g.slug })
+								}
 								className={`pl-2 text-gray-400 ${
 									activeGenre && 'font-bold text-gray-700 dark:text-white'
 								}`}
