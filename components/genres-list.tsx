@@ -14,7 +14,7 @@ export function GenresList({ genres }: Props) {
 	const { gameQueryParams, setGameQueryParams } = useSearchQueryParams()
 
 	return (
-		<div className='pt-2'>
+		<div className='pt-2 md:pr-4'>
 			<h2 className='pb-2 text-xl font-bold dark:text-white'>Genres</h2>
 			<ul>
 				{genres.map((g) => {
