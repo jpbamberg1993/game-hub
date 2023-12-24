@@ -50,7 +50,6 @@ export function GameQueryParamsProvider({ children }: { children: ReactNode }) {
 			return
 		}
 		if (routerRef.current) {
-			console.log(`--> setting parameters`)
 			let params = new URLSearchParams()
 			Object.entries(gameQueryParamsDebounced).forEach(([key, value]) => {
 				if (value === undefined || value === '') {
