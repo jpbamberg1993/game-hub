@@ -27,9 +27,9 @@ const QueryParamsContext = createContext<
 >(undefined)
 
 function getInitialGameQuery(searchParams: ReadonlyURLSearchParams) {
-	// Todo: Move query parameters to constants
-	const searchText = searchParams.get('searchText') ?? ''
-	const genreSlug = searchParams.get('genreSlug') ?? ''
+	const getQueryParam = (key: keyof GameQuery) => searchParams.get(key) ?? ''
+	const searchText = getQueryParam('searchText') ?? ''
+	const genreSlug = getQueryParam('genreSlug') ?? ''
 	return { searchText, genreSlug }
 }
 
