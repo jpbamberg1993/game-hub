@@ -44,7 +44,7 @@ export default async function Home({
 				</div>
 				<div>
 					<Title gameQuery={gameQuery} genres={genres} />
-					<div className='grid grid-cols-[1fr_auto] px-4 pt-2 align-middle'>
+					<div className='grid grid-cols-[1fr_auto] pt-2 align-middle'>
 						<div></div>
 						<MobileFilterMenu genres={genres} gameQuery={gameQuery} />
 					</div>
