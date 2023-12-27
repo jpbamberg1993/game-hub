@@ -10,11 +10,21 @@ import {
 	PlatformsTable,
 } from '@/lib/db/schema'
 import { db } from '@/lib/db/drizzle'
-import { and, asc, eq, getTableColumns, ilike, sql } from 'drizzle-orm'
+import {
+	and,
+	asc,
+	eq,
+	getTableColumns,
+	ilike,
+	like,
+	not,
+	sql,
+} from 'drizzle-orm'
 
 export type GameQuery = {
 	searchText: string
 	genreSlug?: string
+	platformSlug?: string
 }
 
 export async function getGames({
@@ -26,12 +36,9 @@ export async function getGames({
 }): Promise<{ data?: Game[]; nextPage: number; error?: Error | unknown }> {
 	const nextPage = page + 1
 	try {
-		const statement = db
+		const g = db
 			.select({
 				...getTableColumns(GamesTable),
-				platforms: sql<
-					Platform[]
-				>`json_agg(json_build_object('id', platforms.id, 'name', platforms.name, 'slug', platforms.slug, 'parentSlug', platforms.parent_slug, 'gamesCount', platforms.games_count, 'imageBackground', platforms.image_background))`,
 			})
 			.from(GamesTable)
 			.innerJoin(GamesToPlatforms, eq(GamesTable.id, GamesToPlatforms.gameId))
@@ -39,19 +46,64 @@ export async function getGames({
 				PlatformsTable,
 				eq(GamesToPlatforms.platformId, PlatformsTable.id)
 			)
-			.innerJoin(
-				GamesToGenresTable,
-				eq(GamesTable.id, GamesToGenresTable.gameId)
+			.where(
+				query.platformSlug
+					? eq(PlatformsTable.slug, query.platformSlug)
+					: not(eq(PlatformsTable.slug, ''))
 			)
+			.as('g')
+
+		const statement = db
+			.select({
+				id: g.id,
+				sourceId: g.sourceId,
+				createdAt: g.createdAt,
+				updatedAt: g.updatedAt,
+				slug: g.slug,
+				name: g.name,
+				released: g.released,
+				backgroundImage: g.backgroundImage,
+				rating: g.rating,
+				ratingTop: g.ratingTop,
+				ratingsCount: g.ratingsCount,
+				metacritic: g.metacritic,
+				playtime: g.playtime,
+				userId: g.userId,
+				platforms: sql<
+					Platform[]
+				>`json_agg(json_build_object('id', platforms.id, 'name', platforms.name, 'slug', platforms.slug, 'parentSlug', platforms.parent_slug, 'gamesCount', platforms.games_count, 'imageBackground', platforms.image_background))`,
+			})
+			.from(g)
+			.innerJoin(GamesToPlatforms, eq(g.id, GamesToPlatforms.gameId))
+			.innerJoin(
+				PlatformsTable,
+				eq(GamesToPlatforms.platformId, PlatformsTable.id)
+			)
+			.innerJoin(GamesToGenresTable, eq(g.id, GamesToGenresTable.gameId))
 			.innerJoin(
 				GenresTable,
 				and(
 					eq(GamesToGenresTable.genreId, GenresTable.id),
-					ilike(GamesTable.name, `%${query.searchText}%`)
+					ilike(g.name, `%${query.searchText}%`) // This should not be here
 				)
 			)
-			.groupBy(GamesTable.id)
-			.orderBy(asc(GamesTable.createdAt))
+			.groupBy(
+				g.id,
+				g.name,
+				g.slug,
+				g.sourceId,
+				g.createdAt,
+				g.updatedAt,
+				g.released,
+				g.backgroundImage,
+				g.rating,
+				g.ratingTop,
+				g.ratingsCount,
+				g.metacritic,
+				g.playtime,
+				g.userId
+			)
+			.orderBy(asc(g.createdAt))
 			.limit(20)
 			.offset(page * 20)
 		if (query.genreSlug) {
@@ -60,6 +112,7 @@ export async function getGames({
 		const data = await statement.execute()
 		return { data, nextPage }
 	} catch (error) {
+		console.error('--> Error getting games')
 		console.error(error)
 		return { error: error, nextPage }
 	}

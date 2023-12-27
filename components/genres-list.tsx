@@ -1,9 +1,8 @@
 'use client'
 
 import { Genre } from '@/lib/db/schema'
-import { useGenreHook } from '@/hooks/genre-hook'
 import Image from 'next/image'
-import { useSearchQueryParams } from '@/providers/query-params-provider'
+import { useSearchQueryParams } from '@/providers/game-query-params-provider'
 
 type Props = {
 	genres: Genre[]

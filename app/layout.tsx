@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { ReactQueryProvider } from '@/providers/react-query-provider'
-import { GameQueryParamsProvider } from '@/providers/query-params-provider'
+import { GameQueryParamsProvider } from '@/providers/game-query-params-provider'
 
 export const metadata = {
 	title: `Vercel Postgres Demo with Drizzle`,

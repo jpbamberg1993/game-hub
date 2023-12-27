@@ -10,6 +10,8 @@ import { Header } from '@/components/header'
 import { Title } from '@/components/title'
 import { getGenres } from '@/actions/genre-actions'
 import { MobileFilterMenu } from '@/components/mobile-filter-menu'
+import { getPlatforms } from '@/actions/platforms-actions'
+import { PlatformsDropdown } from '@/components/platforms-dropdown'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
@@ -19,15 +21,19 @@ export default async function Home({
 }: {
 	searchParams: { [key: string]: string | string[] | undefined }
 }) {
-	// Info: Fetching genres
 	const genres = await getGenres()
+	const platforms = await getPlatforms()
 
 	// Info: Fetching games
 	const searchText =
 		typeof searchParams.searchText === 'string' ? searchParams.searchText : ''
 	const genreSlug =
 		typeof searchParams.genreSlug === 'string' ? searchParams.genreSlug : ''
-	const gameQuery = { searchText, genreSlug }
+	const platformSlug =
+		typeof searchParams.platformSlug === 'string'
+			? searchParams.platformSlug
+			: ''
+	const gameQuery = { searchText, genreSlug, platformSlug }
 	const queryClient = new QueryClient()
 	await queryClient.prefetchInfiniteQuery({
 		queryKey: ['games', gameQuery],
@@ -44,8 +50,8 @@ export default async function Home({
 				</div>
 				<div>
 					<Title gameQuery={gameQuery} genres={genres} />
-					<div className='grid grid-cols-[1fr_auto] pt-2 align-middle'>
-						<div></div>
+					<div className='grid grid-cols-[1fr_auto] pb-2 pt-2 align-middle'>
+						<PlatformsDropdown platforms={platforms} />
 						<MobileFilterMenu genres={genres} gameQuery={gameQuery} />
 					</div>
 					<HydrationBoundary state={dehydrate(queryClient)}>

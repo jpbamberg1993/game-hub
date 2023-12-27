@@ -30,7 +30,8 @@ function getInitialGameQuery(searchParams: ReadonlyURLSearchParams) {
 	const getQueryParam = (key: keyof GameQuery) => searchParams.get(key) ?? ''
 	const searchText = getQueryParam('searchText') ?? ''
 	const genreSlug = getQueryParam('genreSlug') ?? ''
-	return { searchText, genreSlug }
+	const platformSlug = getQueryParam('platformSlug') ?? ''
+	return { searchText, genreSlug, platformSlug }
 }
 
 export function GameQueryParamsProvider({ children }: { children: ReactNode }) {

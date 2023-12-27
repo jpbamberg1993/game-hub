@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import { useIsMac } from '@/hooks/is-mac-hook'
 import { useSearchInputKeyboardHook } from '@/hooks/search-input-keyboard-hook'
-import { useSearchQueryParams } from '@/providers/query-params-provider'
+import { useSearchQueryParams } from '@/providers/game-query-params-provider'
 
 type Props = {
 	searchText: string
