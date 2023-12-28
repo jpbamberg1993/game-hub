@@ -13,18 +13,34 @@ import { db } from '@/lib/db/drizzle'
 import {
 	and,
 	asc,
+	desc,
 	eq,
 	getTableColumns,
 	ilike,
-	like,
 	not,
 	sql,
 } from 'drizzle-orm'
+import { OrderBy } from '@/actions/order-by'
+import { parseOrderByQueryParam } from '@/lib/utils'
 
 export type GameQuery = {
 	searchText: string
 	genreSlug?: string
 	platformSlug?: string
+	orderBy?: OrderBy
+}
+
+function isAscending(orderBy: OrderBy): boolean {
+	if (!orderBy) return true
+	switch (orderBy) {
+		case OrderBy.createdAt:
+		case OrderBy.name:
+			return true
+		case OrderBy.rating:
+		case OrderBy.released:
+		case OrderBy.metacritic:
+			return false
+	}
 }
 
 export async function getGames({
@@ -34,6 +50,8 @@ export async function getGames({
 	page: number
 	query: GameQuery
 }): Promise<{ data?: Game[]; nextPage: number; error?: Error | unknown }> {
+	const orderBy = parseOrderByQueryParam(query.orderBy) ?? OrderBy.createdAt
+	const ascending = isAscending(orderBy)
 	const nextPage = page + 1
 	try {
 		const g = db
@@ -103,7 +121,7 @@ export async function getGames({
 				g.playtime,
 				g.userId
 			)
-			.orderBy(asc(g.createdAt))
+			.orderBy(ascending ? asc(g[orderBy]) : desc(g[orderBy]))
 			.limit(20)
 			.offset(page * 20)
 		if (query.genreSlug) {

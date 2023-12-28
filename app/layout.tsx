@@ -6,7 +6,7 @@ import { ReactQueryProvider } from '@/providers/react-query-provider'
 import { GameQueryParamsProvider } from '@/providers/game-query-params-provider'
 
 export const metadata = {
-	title: `Vercel Postgres Demo with Drizzle`,
+	title: `RAWG Clone`,
 	description: `A simple Next.js app with Vercel Postgres as the database and Drizzle as the ORM`,
 }
 

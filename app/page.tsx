@@ -5,13 +5,16 @@ import {
 	HydrationBoundary,
 	QueryClient,
 } from '@tanstack/react-query'
-import { getGames } from '@/actions/game-actions'
+import { GameQuery, getGames } from '@/actions/game-actions'
 import { Header } from '@/components/header'
 import { Title } from '@/components/title'
 import { getGenres } from '@/actions/genre-actions'
 import { MobileFilterMenu } from '@/components/mobile-filter-menu'
 import { getPlatforms } from '@/actions/platforms-actions'
 import { PlatformsDropdown } from '@/components/platforms-dropdown'
+import { parseOrderByQueryParam } from '@/lib/utils'
+import { OrderBy } from '@/actions/order-by'
+import { OrderByDropdown } from '@/components/order-by-dropdown'
 
 export const preferredRegion = `home`
 export const dynamic = `force-dynamic`
@@ -33,7 +36,11 @@ export default async function Home({
 		typeof searchParams.platformSlug === 'string'
 			? searchParams.platformSlug
 			: ''
-	const gameQuery = { searchText, genreSlug, platformSlug }
+	const orderBy = parseOrderByQueryParam(searchParams.orderBy as string)
+	const gameQuery: GameQuery = { searchText, genreSlug, platformSlug }
+	if (orderBy) {
+		gameQuery.orderBy = orderBy
+	}
 	const queryClient = new QueryClient()
 	await queryClient.prefetchInfiniteQuery({
 		queryKey: ['games', gameQuery],
@@ -50,8 +57,9 @@ export default async function Home({
 				</div>
 				<div>
 					<Title gameQuery={gameQuery} genres={genres} />
-					<div className='grid grid-cols-[1fr_auto] pb-2 pt-2 align-middle'>
+					<div className='grid w-auto auto-cols-min grid-flow-col gap-2 pb-2 pt-2 align-middle'>
 						<PlatformsDropdown platforms={platforms} />
+						<OrderByDropdown />
 						<MobileFilterMenu genres={genres} gameQuery={gameQuery} />
 					</div>
 					<HydrationBoundary state={dehydrate(queryClient)}>

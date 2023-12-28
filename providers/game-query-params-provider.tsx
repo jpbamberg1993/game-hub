@@ -4,7 +4,6 @@ import { GameQuery } from '@/actions/game-actions'
 import {
 	createContext,
 	ReactNode,
-	useCallback,
 	useContext,
 	useEffect,
 	useRef,
@@ -17,6 +16,7 @@ import {
 	useSearchParams,
 } from 'next/navigation'
 import { useDebounce } from 'use-debounce'
+import { parseOrderByQueryParam } from '@/lib/utils'
 
 const QueryParamsContext = createContext<
 	| {
@@ -31,7 +31,12 @@ function getInitialGameQuery(searchParams: ReadonlyURLSearchParams) {
 	const searchText = getQueryParam('searchText') ?? ''
 	const genreSlug = getQueryParam('genreSlug') ?? ''
 	const platformSlug = getQueryParam('platformSlug') ?? ''
-	return { searchText, genreSlug, platformSlug }
+	const query: GameQuery = { searchText, genreSlug, platformSlug }
+	const orderBy = parseOrderByQueryParam(searchParams.get('orderBy') as string)
+	if (orderBy) {
+		query.orderBy = orderBy
+	}
+	return query
 }
 
 export function GameQueryParamsProvider({ children }: { children: ReactNode }) {
