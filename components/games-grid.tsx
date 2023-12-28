@@ -5,6 +5,7 @@ import { GameQuery, getGames } from '@/actions/game-actions'
 import { GameCard } from '@/components/game-card'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Image from 'next/image'
 
 type Props = {
 	gameQuery: GameQuery
@@ -33,6 +34,26 @@ export function GamesGrid({ gameQuery }: Props) {
 		(count, page) => count + (page.data?.length ?? 0),
 		0
 	)
+	if (fetchedGamesCount === 0) {
+		return (
+			<div className='flex justify-center'>
+				<Image
+					src='/no-games.svg'
+					alt='No games found'
+					width={600}
+					height={800}
+					className='dark:hidden'
+				/>
+				<Image
+					src='/no-games-neon.svg'
+					alt='No games found'
+					width={600}
+					height={800}
+					className='hidden dark:block'
+				/>
+			</div>
+		)
+	}
 	return (
 		<InfiniteScroll
 			next={fetchNextPage}
